@@ -1,9 +1,10 @@
 from airflow.decorators import dag, task
 from airflow.operators.python import PythonVirtualenvOperator
 from airflow.utils.dates import days_ago
+from sqlalchemy import create_engine
 
-from datafuel.immats_utils import (get_minio_client, get_files_from_minio, build_postgres_url_from_creds,
-    get_immats_fromdwh, get_files_from_minio, download_files_from_minio, process_columns, process_month_name,
+from utils_immats import (get_minio_client, get_files_from_minio, build_postgres_url_from_creds,
+    get_immats_fromdwh, get_files_from_minio, download_files_from_minio, process_month_name,
     clean_code_departement, remove_empty_months, clean_df, process_file, load_into_dwh)
 
 

@@ -1,7 +1,6 @@
 import unicodedata
 import re
 import pandas as pd
-import ipydeps
 from sqlalchemy import create_engine
 from minio import Minio
 import logging
@@ -10,6 +9,7 @@ import shutil
 import os
 import numpy as np
 from datetime import datetime
+
 
 ## -----| TOOLBOX |------
 def get_minio_client(
@@ -144,26 +144,26 @@ def download_files_from_minio(bucket_name, file_prefix, ls_files_to_download):
 
 
     def process_columns(string_to_process, replace_string='_'):
-    """
-    Process a column name by :
-    - processing special aplphabetical characters
-    - replacing special characters by value set in 'replace_string' 
-    #Parameters
-    :param string_to_process (str): String to process (column name)
-    :param replace_string (str, default : '_'): Value to set for replaced characters
-        (ex : "/" -> "", where "" is the replace_string)
-    #Return
-    return out (str): Processed string
-    """
-    BIGQUERY_COLUMN_NAME_RE = "[^0-9a-zA-Z_]+"
-    # Get encoding of column
-    str_bytes = str.encode(string_to_process)
-    encoding = 'utf-8'
-    # Process any special alphabetical character
-    temp_out = unicodedata\
-    .normalize('NFKD', string_to_process)\
-    .encode('ASCII', 'ignore')\
-    .decode(encoding)
+        """
+        Process a column name by :
+        - processing special aplphabetical characters
+        - replacing special characters by value set in 'replace_string' 
+        #Parameters
+        :param string_to_process (str): String to process (column name)
+        :param replace_string (str, default : '_'): Value to set for replaced characters
+            (ex : "/" -> "", where "" is the replace_string)
+        #Return
+        return out (str): Processed string
+        """
+        BIGQUERY_COLUMN_NAME_RE = "[^0-9a-zA-Z_]+"
+        # Get encoding of column
+        str_bytes = str.encode(string_to_process)
+        encoding = 'utf-8'
+        # Process any special alphabetical character
+        temp_out = unicodedata\
+        .normalize('NFKD', string_to_process)\
+        .encode('ASCII', 'ignore')\
+        .decode(encoding)
     
     out = re.sub(BIGQUERY_COLUMN_NAME_RE, replace_string, temp_out)
     out = out.lower()
